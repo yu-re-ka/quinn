@@ -372,7 +372,7 @@ impl Drop for EndpointDriver {
 #[derive(Debug)]
 pub(crate) struct EndpointInner {
     socket: UdpSocket,
-    udp_state: Arc<UdpState>,
+    udp_state: UdpState,
     inner: proto::Endpoint,
     outgoing: VecDeque<proto::Transmit>,
     incoming: VecDeque<Connecting>,
@@ -592,7 +592,7 @@ impl EndpointRef {
         let (dirty_send, dirty) = mpsc::unbounded_channel();
         Self(Arc::new(Mutex::new(EndpointInner {
             socket,
-            udp_state: Arc::new(UdpState::new()),
+            udp_state: UdpState::new(),
             inner,
             ipv6,
             outgoing: VecDeque::new(),
